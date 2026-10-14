@@ -41,6 +41,10 @@ nav{position:sticky;top:env(safe-area-inset-top,0px);background:var(--white);bor
 .btn-ghost{display:inline-block;font-size:12px;color:var(--muted);text-decoration:none;border-bottom:1px solid var(--border);padding-bottom:2px;transition:color .2s,border-color .2s;background:none;border-left:none;border-right:none;border-top:none;cursor:pointer;font-family:'Inter',sans-serif;}
 .btn-ghost:hover{color:var(--black);border-color:var(--black);}
 .hero-visual{position:relative;height:460px;overflow:hidden;}
+.hero-carousel{position:relative;width:100%;height:100%;overflow:hidden;background:var(--off);}
+.hero-carousel .slide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease;pointer-events:none;}
+.hero-carousel .slide.active{opacity:1;}
+.hero-carousel .slide img,.hero-carousel .slide .slide-bg{width:100%;height:100%;object-fit:cover;}
 .hero-stat{position:absolute;bottom:20px;right:20px;background:var(--white);padding:14px 18px;text-align:right;}
 .hero-stat-n{font-family:'Playfair Display',serif;font-size:22px;display:block;}
 .hero-stat-l{font-size:10px;color:var(--muted);letter-spacing:.06em;display:block;margin-top:2px;}
@@ -272,7 +276,7 @@ footer{padding:32px 48px;display:flex;align-items:center;justify-content:space-b
       </div>
     </div>
     <div class="hero-visual">
-      <div style="width:100%;height:100%;background:linear-gradient(145deg,#D4CAC0,#B8A898,#9E8E7C);"></div>
+      <div class="hero-carousel" id="hero-carousel"></div>
       <div class="hero-stat">
         <span class="hero-stat-n" id="stat-n">—</span>
         <span class="hero-stat-l">articoli in catalogo</span>
@@ -1115,11 +1119,43 @@ window.addEventListener('popstate',()=>{
   else goHome();
 });
 
+/* ══ HERO CAROUSEL (prima foto di ogni articolo, autoplay, non interagibile) ══ */
+let heroCarouselTimer=null;
+function initHeroCarousel(){
+  const container=document.getElementById('hero-carousel');
+  if(!container||!allArt.length)return;
+
+  const slides=allArt.slice(0,12).map(a=>{
+    const imgs=(a.immagini||a.immagine||'').split(',').map(s=>s.trim()).filter(Boolean);
+    const firstImg=imgs[0];
+    const bg=a.colore||'#B8A898';
+    return firstImg
+      ? `<div class="slide"><img src="${firstImg}" alt="${a.nome||''}" loading="lazy"></div>`
+      : `<div class="slide"><div class="slide-bg" style="background:linear-gradient(145deg,${bg}CC,${bg},${bg}99);"></div></div>`;
+  });
+
+  if(!slides.length)return;
+  container.innerHTML=slides.join('');
+
+  const slideEls=container.querySelectorAll('.slide');
+  slideEls[0].classList.add('active');
+
+  let current=0;
+  if(heroCarouselTimer)clearInterval(heroCarouselTimer);
+
+  heroCarouselTimer=setInterval(()=>{
+    slideEls[current].classList.remove('active');
+    current=(current+1)%slideEls.length;
+    slideEls[current].classList.add('active');
+  },3500);
+}
+
 /* ══ INIT ══ */
 (async()=>{
   await loadData();
   document.getElementById('filter-bar').style.display='flex';
   renderGrid();
+  initHeroCarousel();
   const h=location.hash;
   if(h.startsWith('#articolo-')){const i=parseInt(h.replace('#articolo-',''));if(!isNaN(i)&&allArt[i])openArticolo(i);}
   else if(h.startsWith('#set-')){const i=parseInt(h.replace('#set-',''));if(!isNaN(i)&&allSet[i])openSet(i);}
