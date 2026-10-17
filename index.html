@@ -11,6 +11,19 @@
 :root{
   --white:#FFFFFF;--off:#F7F6F4;--black:#0C0C0C;
   --border:#E5E2DC;--muted:#767270;--light:#EFEDE9;
+
+  /* Category Accents — Zara/Apple minimal palette */
+  --cat-camicie:#C86B4B;      /* terracotta bruciato */
+  --cat-giacche:#2D4A3A;      /* verde bosco profondo */
+  --cat-pantaloni:#3A4B6B;    /* blu navy polveroso */
+  --cat-accessori:#B8956A;    /* oro antico */
+  --cat-scarpe:#5D4E3A;       /* cuoio scuro */
+  --cat-maglioni:#7A5C4A;     /* marrone caldo */
+  --cat-tshirt:#6B7A6B;       /* salvia */
+  --cat-cinture:#4A3B3B;      /* cioccolato */
+  --cat-cappelli:#5A6B7A;     /* grigio ardesia */
+  --cat-altro:#8B7D6B;        /* greige neutro */
+
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
   padding-bottom:env(safe-area-inset-bottom,0px);
@@ -83,10 +96,17 @@ hr.div{border:none;border-top:1px solid var(--border);margin:0 48px;}
 .card:hover img{transform:scale(1.04);}
 .badge{position:absolute;font-size:9px;font-weight:500;letter-spacing:.08em;padding:4px 9px;z-index:5;pointer-events:none;}
 .badge-status{top:12px;right:12px;}
-.badge-cat{top:12px;left:12px;background:var(--white);color:var(--black);}
+.badge-cat{top:12px;left:12px;background:var(--white);color:var(--black);border:1px solid var(--border);}
 .badge-set{bottom:12px;left:12px;background:rgba(12,12,12,.7);color:var(--white);}
 .badge.av{background:var(--white);color:var(--black);}
 .badge.sold{background:var(--black);color:var(--white);}
+
+/* Category accent — uses inline --cat-accent custom property on .card */
+.card .badge-cat{border-color:var(--cat-accent);color:var(--cat-accent);}
+.card .card-price:not(.sp){color:var(--cat-accent);}
+.card .card-action{border-color:var(--cat-accent);color:var(--cat-accent);}
+.card .card-action:hover{background:var(--cat-accent);color:var(--white);border-color:var(--cat-accent);}
+.card:hover .badge-cat{background:var(--cat-accent);color:var(--white);border-color:var(--cat-accent);}
 .sold-ov{position:absolute;inset:0;background:rgba(12,12,12,.25);z-index:4;pointer-events:none;}
 .card-info{padding:16px;border-top:1px solid var(--border);}
 .card-name{font-family:'Playfair Display',serif;font-size:15px;font-weight:400;margin-bottom:4px;}
@@ -179,21 +199,30 @@ hr.div{border:none;border-top:1px solid var(--border);margin:0 48px;}
 .comp-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:400;margin-bottom:6px;padding-top:40px;border-top:1px solid var(--border);}
 .comp-subtitle{font-size:12px;color:var(--muted);margin-bottom:28px;}
 .comp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);}
-.comp-card{background:var(--white);cursor:pointer;content-visibility:auto;contain-intrinsic-size:300px 400px;contain:layout paint style;}
+.comp-card{background:var(--white);cursor:pointer;content-visibility:auto;contain-intrinsic-size:300px 400px;contain:layout paint style;transition:box-shadow .3s cubic-bezier(0.22,1,0.36,1),transform .3s cubic-bezier(0.22,1,0.36,1);}
 .comp-img{width:100%;aspect-ratio:3/4;overflow:hidden;position:relative;}
-.comp-img-bg{width:100%;height:100%;transition:transform .4s ease;}
+.comp-img-bg{width:100%;height:100%;transition:transform .4s ease;will-change:transform;backface-visibility:hidden;}
 .comp-card:hover .comp-img-bg{transform:scale(1.04);}
-.comp-img img{width:100%;height:100%;object-fit:cover;}
+.comp-img img{width:100%;height:100%;object-fit:cover;will-change:transform;backface-visibility:hidden;}
 .comp-info{padding:14px;}
 .comp-name{font-family:'Playfair Display',serif;font-size:14px;font-weight:400;margin-bottom:3px;}
 .comp-cat{font-size:10px;color:var(--muted);margin-bottom:10px;letter-spacing:.04em;}
 .comp-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;}
-.comp-price{font-size:13px;font-weight:500;}
+.comp-price{font-size:13px;font-weight:500;transition:transform .2s ease;}
 .comp-links{display:flex;gap:12px;}
-.comp-link{font-size:10px;font-weight:500;color:var(--black);border:none;border-bottom:1px solid var(--black);background:none;cursor:pointer;font-family:'Inter',sans-serif;padding-bottom:1px;letter-spacing:.02em;transition:opacity .2s;text-decoration:none;}
+.comp-link{font-size:10px;font-weight:500;color:var(--black);border:none;border-bottom:1px solid var(--black);background:none;cursor:pointer;font-family:'Inter',sans-serif;padding-bottom:1px;letter-spacing:.02em;transition:opacity .2s,background .2s,color .2s,border-color .2s;text-decoration:none;}
 .comp-link:hover{opacity:.5;}
 .comp-link.ext{color:var(--muted);border-color:var(--border);}
 .comp-missing{background:var(--off);padding:20px;font-size:12px;color:var(--muted);text-align:center;}
+
+/* Comp card hover — matching .card feel */
+.comp-card:hover{
+  box-shadow:0 16px 48px rgba(12,12,12,.12),0 4px 12px rgba(12,12,12,.08);
+  transform:translateY(-4px);
+  z-index:10;
+}
+.comp-card:active{transform:translateY(-2px) scale(.995);transition-duration:.1s;}
+.comp-card:hover .comp-price{transform:scale(1.02);}
 
 /* CTA BAND */
 .cta-band{background:var(--black);padding:64px 48px;text-align:center;}
@@ -215,6 +244,66 @@ footer{padding:32px 48px;display:flex;align-items:center;justify-content:space-b
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 @media(prefers-reduced-motion:reduce){@keyframes shimmer{0%,100%{background-position:200% 0}}}
 .skel-img{aspect-ratio:3/4;contain:layout paint;}
+
+/* SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s cubic-bezier(0.22,1,0.36,1),transform .6s cubic-bezier(0.22,1,0.36,1);}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal-delay-1{transition-delay:60ms;}
+.reveal-delay-2{transition-delay:120ms;}
+.reveal-delay-3{transition-delay:180ms;}
+.reveal-delay-4{transition-delay:240ms;}
+.reveal-delay-5{transition-delay:300ms;}
+.reveal-delay-6{transition-delay:360ms;}
+@media(prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;transition:none;}
+}
+
+/* ENHANCED CARD HOVER — Zara/Apple feel */
+.card{transition:box-shadow .3s cubic-bezier(0.22,1,0.36,1),transform .3s cubic-bezier(0.22,1,0.36,1),border-color .3s;}
+.card:hover{
+  box-shadow:0 16px 48px rgba(12,12,12,.12),0 4px 12px rgba(12,12,12,.08);
+  transform:translateY(-4px);
+  border-color:transparent;
+  z-index:10;
+}
+.card:active{transform:translateY(-2px) scale(.995);transition-duration:.1s;}
+.card:focus-visible{outline:2px solid var(--black);outline-offset:2px;}
+
+/* Card image hover refinement */
+.card-img{transition:overflow .3s;}
+.card:hover .card-img{overflow:visible;}
+
+/* Enhanced badge hover */
+.badge-cat{transition:background .2s ease,color .2s ease,border-color .2s ease,transform .2s ease;}
+.card:hover .badge-cat{transform:scale(1.05);}
+
+/* Micro-interaction: price pulse on hover */
+.card-price:not(.sp){transition:color .2s ease,transform .2s ease;}
+.card:hover .card-price:not(.sp){transform:scale(1.02);}
+
+/* Empty state dynamic */
+.empty{position:relative;overflow:hidden;}
+.empty::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 40%,var(--light) 50%,transparent 60%);background-size:200% 200%;animation:empty-shimmer 3s ease-in-out infinite;opacity:.3;}
+@keyframes empty-shimmer{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+.empty-text{position:relative;z-index:1;}
+
+/* Detail page category accent */
+.detail-status.av{border-color:var(--cat-accent);color:var(--cat-accent);}
+.detail-status.sold{border-color:var(--black);color:var(--black);}
+.detail-cat{border-color:var(--cat-accent);color:var(--cat-accent);}
+.detail-price{color:var(--cat-accent);}
+.detail-cta:not(.off){background:var(--cat-accent);}
+.detail-cta:not(.off):hover{background:var(--cat-accent);opacity:.85;}
+
+/* Comp card category accent */
+.comp-card[data-cat] .comp-price{color:var(--cat-accent);}
+.comp-card[data-cat] .comp-link:not(.ext){color:var(--cat-accent);border-color:var(--cat-accent);}
+.comp-card[data-cat] .comp-link:not(.ext):hover{background:var(--cat-accent);color:var(--white);border-color:var(--cat-accent);}
+
+/* Focus visible for all interactive */
+button:focus-visible,a:focus-visible,[onclick]:focus-visible{
+  outline:2px solid var(--black);outline-offset:2px;
+}
 .skel-line{height:12px;margin:16px 16px 8px;}
 .skel-line.s{height:10px;width:55%;margin:6px 16px 16px;}
 
@@ -704,6 +793,20 @@ function initAllCarousels(root=document){
   root.querySelectorAll('.carousel').forEach(initCarouselGestures);
 }
 
+/* ══ SCROLL REVEAL ══ */
+function initScrollReveal(root=document){
+  if(!('IntersectionObserver' in window)){root.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible'));return;}
+  const observer=new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  },{rootMargin:'0px 0px -10% 0px',threshold:.08});
+  root.querySelectorAll('.reveal:not(.visible)').forEach(el=>observer.observe(el));
+}
+
 /* ══ LIGHTBOX MODAL ══ */
 function openLightbox(imgs,startIdx=0){
   if(!imgs||!imgs.length) return;
@@ -798,19 +901,46 @@ function updateCount(){
   }
 }
 
+/* ══ HELPER: category slug & accent ══ */
+function catSlug(cat){
+  if(!cat) return 'altro';
+  return cat.toLowerCase()
+    .replace(/[àáâãäå]/g,'a')
+    .replace(/[èéêë]/g,'e')
+    .replace(/[ìíîï]/g,'i')
+    .replace(/[òóôõö]/g,'o')
+    .replace(/[ùúûü]/g,'u')
+    .replace(/[ç]/g,'c')
+    .replace(/[^a-z0-9]+/g,'-')
+    .replace(/(^-|-$)/g,'');
+}
+function catAccentVar(cat){
+  const slug=catSlug(cat);
+  const map={
+    camicie:'--cat-camicie',giacche:'--cat-giacche',pantaloni:'--cat-pantaloni',
+    accessori:'--cat-accessori',scarpe:'--cat-scarpe',maglioni:'--cat-maglioni',
+    tshirt:'--cat-tshirt',cinture:'--cat-cinture',cappelli:'--cat-cappelli'
+  };
+  return map[slug]||'--cat-altro';
+}
+
 /* ══ ARTICLE CARD ══ */
 function artCardHTML(a,i){
   const sold=a.status==='venduto';
-  return `<div class="card" data-status="${a.status}" onclick="openArticolo(${i})">
+  const cat=a.categoria||'';
+  const slug=catSlug(cat);
+  const accentVar=catAccentVar(cat);
+  const delay=Math.min(i%6,5)+1;
+  return `<div class="card reveal reveal-delay-${delay}" data-status="${a.status}" data-cat="${slug}" style="--cat-accent:var(${accentVar})" onclick="openArticolo(${i})">
     <div class="card-img">
       ${renderMediaEl(a,{isDetail:false,carouselId:`art-${i}`})}
       ${soldEl(sold)}
-      ${a.categoria?`<span class="badge badge-cat">${a.categoria}</span>`:''}
+      ${cat?`<span class="badge badge-cat">${cat}</span>`:''}
       ${badgeAv(sold)}
     </div>
     <div class="card-info">
       <h3 class="card-name">${a.nome}</h3>
-      <p class="card-sub">${a.descrizione?a.descrizione.substring(0,70)+'…':a.categoria||''}</p>
+      <p class="card-sub">${a.descrizione?a.descrizione.substring(0,70)+'…':cat||''}</p>
       <div class="card-footer">
         <span class="card-price${sold?' sp':''}">€ ${a.prezzo}</span>
         <button class="card-action${sold?' off':''}">Vedi l'articolo</button>
@@ -823,7 +953,11 @@ function artCardHTML(a,i){
 function setCardHTML(s,i){
   const sold=s.status==='venduto';
   const pezzi=(s.componenti||'').split(',').filter(Boolean).length;
-  return `<div class="card" data-status="${s.status}" onclick="openSet(${i})">
+  const cat=s.categoria||'';
+  const slug=catSlug(cat);
+  const accentVar=catAccentVar(cat);
+  const delay=Math.min(i%6,5)+1;
+  return `<div class="card reveal reveal-delay-${delay}" data-status="${s.status}" data-cat="${slug}" style="--cat-accent:var(${accentVar})" onclick="openSet(${i})">
     <div class="card-img">
       ${renderMediaEl(s,{isDetail:false,carouselId:`set-${i}`})}
       ${soldEl(sold)}
@@ -847,18 +981,38 @@ function renderGrid(){
   if(currentTab==='articoli'){
     const html=allArt.map((a,i)=>artCardHTML(a,i)).join('');
     document.getElementById('grid-container').innerHTML=
-      allArt.length?`<div class="art-grid" id="art-grid">${html}</div>`:`<div class="empty">Nessun articolo ancora.</div>`;
+      allArt.length?`<div class="art-grid" id="art-grid">${html}</div>`:emptyStateHTML('articoli');
     document.getElementById('cnt-art').textContent=` (${allArt.length})`;
     document.getElementById('cnt-set').textContent=` (${allSet.length})`;
     applyCurrentFilter();
   } else {
     const html=allSet.map((s,i)=>setCardHTML(s,i)).join('');
     document.getElementById('grid-container').innerHTML=
-      allSet.length?`<div class="set-grid" id="set-grid">${html}</div>`:`<div class="empty">Nessun set ancora.</div>`;
+      allSet.length?`<div class="set-grid" id="set-grid">${html}</div>`:emptyStateHTML('set');
     document.getElementById('cnt-set').textContent=` (${allSet.length})`;
   }
   document.getElementById('stat-n').textContent='+'+allArt.length;
   initAllCarousels(document.getElementById('grid-container'));
+  initScrollReveal(document.getElementById('grid-container'));
+}
+
+function emptyStateHTML(type){
+  const hour=new Date().getHours();
+  const messages={
+    articoli:[
+      'Nessun articolo ancora. Torna presto — i pezzi migliori volano via.',
+      'Il catalogo si sta riempiendo. Porta Portese non delude mai.',
+      'Ancora vuoto? Significa che stiamo cercando. Vale l\'attesa.'
+    ],
+    set:[
+      'Nessun set pronto. Gli outfit si costruiscono con calma.',
+      'I look completati appaiono qui. Pazienza, curatore.',
+      'Vuoto per ora. Ma i pezzi giusti si trovano sempre.'
+    ]
+  };
+  const arr=messages[type]||messages.articoli;
+  const msg=arr[Math.floor(arr.length*Math.random())];
+  return `<div class="empty"><span class="empty-text">${msg}</span></div>`;
 }
 function applyCurrentFilter(){
   if(currentFilter==='tutti')return;
@@ -874,6 +1028,8 @@ function openArticolo(i){
   scrollY=window.scrollY;
   const a=allArt[i];const sold=a.status==='venduto';
   const imgs=getItemImages(a);
+  const cat=a.categoria||'';
+  const accentVar=catAccentVar(cat);
 
   document.getElementById('articolo-body').innerHTML=`
     <div class="detail-gallery">
@@ -882,9 +1038,9 @@ function openArticolo(i){
       </div>
       ${renderThumbsHTML(imgs)}
     </div>
-    <div>
+    <div style="--cat-accent:var(${accentVar})">
       <span class="detail-status ${sold?'sold':'av'}">${sold?'● Venduto':'● Disponibile'}</span>
-      ${a.categoria?`<span class="detail-cat">${a.categoria}</span>`:''}
+      ${cat?`<span class="detail-cat">${cat}</span>`:''}
       <h2 class="detail-name">${a.nome}</h2>
       <p class="detail-desc">${a.descrizione||'Un pezzo trovato tra i mercatini romani.'}</p>
       <div class="detail-price-row">
@@ -910,6 +1066,8 @@ function openSet(i){
   const s=allSet[i];const sold=s.status==='venduto';
   const pezzi=(s.componenti||'').split(',').filter(Boolean).length;
   const imgs=getItemImages(s);
+  const cat=s.categoria||'';
+  const accentVar=catAccentVar(cat);
 
   document.getElementById('set-body').innerHTML=`
     <div class="detail-gallery">
@@ -918,7 +1076,7 @@ function openSet(i){
       </div>
       ${renderThumbsHTML(imgs)}
     </div>
-    <div>
+    <div style="--cat-accent:var(${accentVar})">
       <span class="detail-status ${sold?'sold':'av'}">${sold?'● Venduto':'● Disponibile'}</span>
       <span class="detail-cat">Set · ${pezzi} pezzi</span>
       <h2 class="detail-name">${s.nome}</h2>
@@ -952,12 +1110,15 @@ function renderComponenti(s){
   const cards=found.map((f,compIdx)=>{
     if(!f) return `<div class="comp-card comp-missing">Articolo non trovato</div>`;
     const {a,idx}=f;
-    return `<div class="comp-card" onclick="openArticolo(${idx})">
+    const cat=a.categoria||'';
+    const slug=catSlug(cat);
+    const accentVar=catAccentVar(cat);
+    return `<div class="comp-card" data-cat="${slug}" style="--cat-accent:var(${accentVar})" onclick="openArticolo(${idx})">
       <div class="comp-img">
         ${renderMediaEl(a,{isDetail:false,carouselId:`comp-${compIdx}`})}
       </div>
       <div class="comp-info">
-        <p class="comp-cat">${a.categoria||''}</p>
+        <p class="comp-cat">${cat}</p>
         <p class="comp-name">${a.nome}</p>
         <div class="comp-footer">
           <span class="comp-price">€ ${a.prezzo}</span>
@@ -981,8 +1142,25 @@ function show(id){
   const wasHome=document.getElementById('view-home').style.display!=='none';
   const willBeHome=id==='view-home';
 
-  ['view-home','view-articolo','view-set-detail'].forEach(v=>{
-    document.getElementById(v).style.display=v===id?'block':'none';
+  const views=['view-home','view-articolo','view-set-detail'];
+  views.forEach(v=>{
+    const el=document.getElementById(v);
+    if(v===id){
+      el.style.display='block';
+      // Micro-entrance animation
+      el.style.opacity='0';
+      el.style.transform='translateY(8px)';
+      requestAnimationFrame(()=>{
+        el.style.transition='opacity .3s cubic-bezier(0.22,1,0.36,1),transform .3s cubic-bezier(0.22,1,0.36,1)';
+        el.style.opacity='1';
+        el.style.transform='translateY(0)';
+      });
+    }else{
+      el.style.display='none';
+      el.style.opacity='';
+      el.style.transform='';
+      el.style.transition='';
+    }
   });
 
   if(wasHome && !willBeHome) stopHeroCarousel();
