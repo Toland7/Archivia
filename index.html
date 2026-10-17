@@ -42,9 +42,9 @@ nav{position:sticky;top:env(safe-area-inset-top,0px);background:var(--white);bor
 .btn-ghost:hover{color:var(--black);border-color:var(--black);}
 .hero-visual{position:relative;height:460px;overflow:hidden;}
 .hero-carousel{position:relative;width:100%;height:100%;overflow:hidden;background:var(--off);}
-.hero-carousel .slide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease;pointer-events:none;}
+.hero-carousel .slide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease;pointer-events:none;will-change:opacity;}
 .hero-carousel .slide.active{opacity:1;}
-.hero-carousel .slide img,.hero-carousel .slide .slide-bg{width:100%;height:100%;object-fit:cover;}
+.hero-carousel .slide img,.hero-carousel .slide .slide-bg{width:100%;height:100%;object-fit:cover;will-change:transform;backface-visibility:hidden;}
 .hero-stat{position:absolute;bottom:20px;right:20px;background:var(--white);padding:14px 18px;text-align:right;}
 .hero-stat-n{font-family:'Playfair Display',serif;font-size:22px;display:block;}
 .hero-stat-l{font-size:10px;color:var(--muted);letter-spacing:.06em;display:block;margin-top:2px;}
@@ -74,12 +74,12 @@ hr.div{border:none;border-top:1px solid var(--border);margin:0 48px;}
 .set-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);}
 
 /* CARD BASE */
-.card{background:var(--white);cursor:pointer;}
+.card{background:var(--white);cursor:pointer;content-visibility:auto;contain-intrinsic-size:300px 450px;contain:layout paint style;}
 .card.hidden{display:none;}
 .card-img{width:100%;aspect-ratio:3/4;position:relative;overflow:hidden;}
-.card-img-bg{width:100%;height:100%;transition:transform .5s ease;}
+.card-img-bg{width:100%;height:100%;transition:transform .5s ease;will-change:transform;backface-visibility:hidden;}
 .card:hover .card-img-bg{transform:scale(1.04);}
-.card img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;}
+.card img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;will-change:transform;backface-visibility:hidden;}
 .card:hover img{transform:scale(1.04);}
 .badge{position:absolute;font-size:9px;font-weight:500;letter-spacing:.08em;padding:4px 9px;z-index:5;pointer-events:none;}
 .badge-status{top:12px;right:12px;}
@@ -101,11 +101,11 @@ hr.div{border:none;border-top:1px solid var(--border);margin:0 48px;}
 /* CAROUSEL */
 .carousel{position:relative;width:100%;height:100%;overflow:hidden;user-select:none;-webkit-user-select:none;}
 .carousel-track{display:flex;width:100%;height:100%;transition:transform .38s cubic-bezier(0.22,1,0.36,1);will-change:transform;}
-.carousel-slide{flex:0 0 100%;width:100%;height:100%;position:relative;overflow:hidden;}
-.carousel-slide img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease;}
+.carousel-slide{flex:0 0 100%;width:100%;height:100%;position:relative;overflow:hidden;will-change:transform;}
+.carousel-slide img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease;will-change:transform;backface-visibility:hidden;}
 .card:hover .carousel-slide img,.comp-card:hover .carousel-slide img{transform:scale(1.04);}
 .carousel-single{width:100%;height:100%;position:relative;overflow:hidden;}
-.carousel-single img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease;}
+.carousel-single img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease;will-change:transform;backface-visibility:hidden;}
 .card:hover .carousel-single img,.comp-card:hover .carousel-single img{transform:scale(1.04);}
 .carousel-arrow{position:absolute;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.94);color:var(--black);border:1px solid rgba(0,0,0,.08);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:7;opacity:0;transition:opacity .2s ease,background .15s ease,transform .15s ease;box-shadow:0 2px 8px rgba(0,0,0,.12);padding:0;}
 .carousel-arrow:hover{background:var(--white);transform:translateY(-50%) scale(1.08);}
@@ -129,6 +129,8 @@ hr.div{border:none;border-top:1px solid var(--border);margin:0 48px;}
 .detail-carousel .carousel-arrow svg{width:18px;height:18px;}
 .detail-carousel .carousel-arrow.prev{left:14px;}
 .detail-carousel .carousel-arrow.next{right:14px;}
+.detail-carousel .carousel-slide{will-change:transform;}
+.detail-carousel .carousel-slide img{will-change:transform;backface-visibility:hidden;}
 .detail-counter{position:absolute;bottom:12px;right:12px;background:rgba(12,12,12,.7);color:var(--white);font-size:10px;letter-spacing:.08em;padding:4px 9px;border-radius:2px;z-index:6;font-family:'Inter',sans-serif;font-weight:400;pointer-events:none;}
 .detail-thumbs{display:flex;gap:10px;margin-top:14px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin;}
 .detail-thumbs::-webkit-scrollbar{height:3px;}
@@ -143,8 +145,8 @@ hr.div{border:none;border-top:1px solid var(--border);margin:0 48px;}
 .lightbox-modal{position:fixed;inset:0;background:rgba(12,12,12,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:24px;}
 .lightbox-close{position:absolute;top:24px;right:28px;background:none;border:none;color:var(--white);font-size:32px;line-height:1;cursor:pointer;opacity:.7;transition:opacity .2s;z-index:1002;}
 .lightbox-close:hover{opacity:1;}
-.lightbox-content{max-width:90vw;max-height:88vh;position:relative;display:flex;flex-direction:column;align-items:center;}
-.lightbox-content img{max-width:100%;max-height:82vh;object-fit:contain;box-shadow:0 12px 48px rgba(0,0,0,.6);}
+.lightbox-content{max-width:90vw;max-height:88vh;position:relative;display:flex;flex-direction:column;align-items:center;contain:layout paint;}
+.lightbox-content img{max-width:100%;max-height:82vh;object-fit:contain;box-shadow:0 12px 48px rgba(0,0,0,.6);will-change:transform;backface-visibility:hidden;}
 .lightbox-counter{margin-top:14px;color:rgba(255,255,255,.6);font-size:12px;letter-spacing:.08em;}
 .lightbox-arrow{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.15);color:var(--white);border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;z-index:1001;}
 .lightbox-arrow:hover{background:rgba(255,255,255,.3);transform:translateY(-50%) scale(1.08);}
@@ -177,7 +179,7 @@ hr.div{border:none;border-top:1px solid var(--border);margin:0 48px;}
 .comp-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:400;margin-bottom:6px;padding-top:40px;border-top:1px solid var(--border);}
 .comp-subtitle{font-size:12px;color:var(--muted);margin-bottom:28px;}
 .comp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);}
-.comp-card{background:var(--white);cursor:pointer;}
+.comp-card{background:var(--white);cursor:pointer;content-visibility:auto;contain-intrinsic-size:300px 400px;contain:layout paint style;}
 .comp-img{width:100%;aspect-ratio:3/4;overflow:hidden;position:relative;}
 .comp-img-bg{width:100%;height:100%;transition:transform .4s ease;}
 .comp-card:hover .comp-img-bg{transform:scale(1.04);}
@@ -211,7 +213,8 @@ footer{padding:32px 48px;display:flex;align-items:center;justify-content:space-b
 /* LOADING */
 .skeleton{background:linear-gradient(90deg,var(--off) 25%,var(--light) 50%,var(--off) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-.skel-img{aspect-ratio:3/4;}
+@media(prefers-reduced-motion:reduce){@keyframes shimmer{0%,100%{background-position:200% 0}}}
+.skel-img{aspect-ratio:3/4;contain:layout paint;}
 .skel-line{height:12px;margin:16px 16px 8px;}
 .skel-line.s{height:10px;width:55%;margin:6px 16px 16px;}
 
@@ -272,7 +275,7 @@ footer{padding:32px 48px;display:flex;align-items:center;justify-content:space-b
       <p class="hero-sub">Capi vintage selezionati a Porta Portese e nei mercatini romani. Ogni pezzo è unico — alcuni li puoi trovare già abbinati in un set.</p>
       <div class="hero-actions">
         <button class="btn-primary" onclick="document.getElementById('catalogo').scrollIntoView({behavior:'smooth'})">Sfoglia il catalogo</button>
-        <a href="https://www.vinted.it" target="_blank" rel="noopener" class="btn-ghost">Vai su Vinted</a>
+        <a href="https://www.vinted.it/member/81500783" target="_blank" rel="noopener" class="btn-ghost">Vai su Vinted</a>
       </div>
     </div>
     <div class="hero-visual">
@@ -313,7 +316,7 @@ footer{padding:32px 48px;display:flex;align-items:center;justify-content:space-b
   <div class="cta-band">
     <h2>Trovi tutto su Vinted.<br><em>Anche i singoli pezzi dei set.</em></h2>
     <p>Acquista quello che vuoi — un capo alla volta, o un look intero.</p>
-    <a href="https://www.vinted.it" target="_blank" rel="noopener">Vai al profilo Vinted</a>
+    <a href="https://www.vinted.it/member/81500783" target="_blank" rel="noopener">Vai al profilo Vinted</a>
   </div>
 </div>
 
@@ -379,106 +382,7 @@ const CFG = {
   set_csv:      'INCOLLA_QUI_URL_CSV_FOGLIO_SET',
 };
 
-/* ── DEMO DATA ── */
-const DEMO_ART = [
-  {
-    id:'001',nome:'Blazer Oversize Beige',categoria:'Giacche',prezzo:'24',status:'disponibile',colore:'#C8B8A0',
-    immagini:[
-      'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?auto=format&fit=crop&w=800&q=80'
-    ],
-    link_vinted:'https://www.vinted.it',
-    descrizione:'Trovato a Porta Portese per 1€. Tessuto strutturato in misto lana, spalle ampie perfette per la silhouette anni \'90. Taglia L, porta come M oversize.'
-  },
-  {
-    id:'002',nome:"Jeans Vita Alta Levi's",categoria:'Pantaloni',prezzo:'18',status:'disponibile',colore:'#6B82A8',
-    immagini:[
-      'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1582552938357-32b906df40cb?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1604176354204-9268737828e4?auto=format&fit=crop&w=800&q=80'
-    ],
-    link_vinted:'https://www.vinted.it',
-    descrizione:"Levi's 501 originale anni '90, stonewashed naturale. Taglia 28/30, vita alta reale. Qualche segno di vissuto che gli dà carattere."
-  },
-  {
-    id:'003',nome:'Cintura Cuoio Marrone',categoria:'Accessori',prezzo:'8',status:'disponibile',colore:'#8C6848',
-    immagini:[
-      'https://images.unsplash.com/photo-1624222247344-550fb60583dc?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=80'
-    ],
-    link_vinted:'https://www.vinted.it',
-    descrizione:'Cintura in cuoio vero, fibbia dorata opaca. Larghezza 3cm, lunghezza 90cm. Si abbina con tutto.'
-  },
-  {
-    id:'004',nome:'Cardigan Verde Lana',categoria:'Maglie',prezzo:'15',status:'disponibile',colore:'#9EB5AF',
-    immagini:[
-      'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?auto=format&fit=crop&w=800&q=80'
-    ],
-    link_vinted:'https://www.vinted.it',
-    descrizione:"Cardigan in lana merino verde smeraldo, bottoni madreperla. Taglia M. Morbidissimo, nessun buco o pilling."
-  },
-  {
-    id:'005',nome:'Gonna Midi a Pieghe',categoria:'Gonne',prezzo:'14',status:'disponibile',colore:'#D5C8BB',
-    immagini:[
-      'https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=800&q=80'
-    ],
-    link_vinted:'https://www.vinted.it',
-    descrizione:'Gonna midi color avorio con pieghe sartoriali. Caduta fluida, vita 68cm. Versatile — da ufficio o con stivaletti.'
-  },
-  {
-    id:'006',nome:'Giubbotto Pelle Rossa',categoria:'Giacche',prezzo:'22',status:'venduto',colore:'#A86848',
-    immagini:[
-      'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1520975954732-35dd22299614?auto=format&fit=crop&w=800&q=80'
-    ],
-    link_vinted:'https://www.vinted.it',
-    descrizione:'Pelle vera, colore rosso bordeaux intenso. Venduto in 20 minuti dalla pubblicazione. Il pezzo di cui vado più fiera.'
-  },
-  {
-    id:'007',nome:'Camicia Oxford Bianca',categoria:'Camicie',prezzo:'12',status:'disponibile',colore:'#E8E3DC',
-    immagini:[
-      'https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=800&q=80'
-    ],
-    link_vinted:'https://www.vinted.it',
-    descrizione:'Cotone Oxford pesante, costruzione impeccabile. Taglia 40, si porta fuori dai pantaloni. Base perfetta per qualsiasi outfit.'
-  },
-  {
-    id:'008',nome:'Blusa Seta Cipria',categoria:'Camicie',prezzo:'16',status:'disponibile',colore:'#D8C0B8',
-    immagini:[
-      'https://images.unsplash.com/photo-1564257631407-4deb1f99d992?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80'
-    ],
-    link_vinted:'https://www.vinted.it',
-    descrizione:'Seta pura, colore cipria delicato. Taglia S/M. Da abbinare con denim o sotto un blazer oversize.'
-  },
-];
-const DEMO_SET = [
-  {
-    id:'S01',nome:"Outfit Milano '90",prezzo:'48',status:'disponibile',colore:'#B8A898',
-    immagini:[
-      'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=800&q=80'
-    ],
-    link_vinted:'https://www.vinted.it',
-    descrizione:"Un classico anni '90 ritrovato pezzo per pezzo a Porta Portese. Il blazer oversize fa da protagonista: si abbina ai jeans vita alta e alla cintura cuoio per un look completo.",
-    componenti:'001,002,003'
-  },
-  {
-    id:'S02',nome:'Verde Smeraldo',prezzo:'27',status:'disponibile',colore:'#9EB5AF',
-    immagini:[
-      'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?auto=format&fit=crop&w=800&q=80'
-    ],
-    link_vinted:'https://www.vinted.it',
-    descrizione:'Il verde di stagione in versione vintage. Cardigan lana + gonna midi: elegante da ufficio o da aperitivo. I pezzi funzionano benissimo anche separati.',
-    componenti:'004,005'
-  },
-];
+
 
 /* ══ STATO ══ */
 let allArt = [], allSet = [];
@@ -758,15 +662,14 @@ function initCarouselGestures(carousel){
   carousel.dataset.gesturesInit='true';
   let startX=0,startY=0,dist=0,isHorizontal=null;
 
-  carousel.addEventListener('touchstart',e=>{
+  function onTouchStart(e){
     if(e.touches.length!==1)return;
     startX=e.touches[0].clientX;
     startY=e.touches[0].clientY;
     dist=0;
     isHorizontal=null;
-  },{passive:true});
-
-  carousel.addEventListener('touchmove',e=>{
+  }
+  function onTouchMove(e){
     if(e.touches.length!==1)return;
     const dx=e.touches[0].clientX-startX;
     const dy=e.touches[0].clientY-startY;
@@ -776,9 +679,8 @@ function initCarouselGestures(carousel){
       }
     }
     if(isHorizontal) dist=dx;
-  },{passive:true});
-
-  carousel.addEventListener('touchend',()=>{
+  }
+  function onTouchEnd(){
     if(isHorizontal&&Math.abs(dist)>35){
       isSwiping=true;
       setTimeout(()=>{isSwiping=false;},350);
@@ -788,7 +690,14 @@ function initCarouselGestures(carousel){
         carouselPrev(carousel.querySelector('.carousel-arrow.prev')||carousel);
       }
     }
-  },{passive:true});
+  }
+
+  carousel.addEventListener('touchstart',onTouchStart,{passive:true});
+  carousel.addEventListener('touchmove',onTouchMove,{passive:true});
+  carousel.addEventListener('touchend',onTouchEnd,{passive:true});
+
+  // Store per cleanup eventuale
+  carousel._gestureHandlers={onTouchStart,onTouchMove,onTouchEnd};
 }
 
 function initAllCarousels(root=document){
@@ -1069,9 +978,15 @@ function renderComponenti(s){
 
 /* ══ NAV ══ */
 function show(id){
+  const wasHome=document.getElementById('view-home').style.display!=='none';
+  const willBeHome=id==='view-home';
+
   ['view-home','view-articolo','view-set-detail'].forEach(v=>{
     document.getElementById(v).style.display=v===id?'block':'none';
   });
+
+  if(wasHome && !willBeHome) stopHeroCarousel();
+  if(!wasHome && willBeHome) initHeroCarousel();
 }
 function goHome(tab){
   if(tab){
@@ -1120,7 +1035,7 @@ window.addEventListener('popstate',()=>{
 });
 
 /* ══ HERO CAROUSEL (prima foto di ogni articolo, autoplay, non interagibile) ══ */
-let heroCarouselTimer=null;
+let heroCarouselRAF=0, heroCarouselLast=0;
 function initHeroCarousel(){
   const container=document.getElementById('hero-carousel');
   if(!container||!allArt.length)return;
@@ -1141,13 +1056,25 @@ function initHeroCarousel(){
   slideEls[0].classList.add('active');
 
   let current=0;
-  if(heroCarouselTimer)clearInterval(heroCarouselTimer);
+  const INTERVAL=3500;
 
-  heroCarouselTimer=setInterval(()=>{
-    slideEls[current].classList.remove('active');
-    current=(current+1)%slideEls.length;
-    slideEls[current].classList.add('active');
-  },3500);
+  function tick(now){
+    if(!heroCarouselRAF) return; // stopped
+    if(now - heroCarouselLast >= INTERVAL){
+      slideEls[current].classList.remove('active');
+      current=(current+1)%slideEls.length;
+      slideEls[current].classList.add('active');
+      heroCarouselLast=now;
+    }
+    heroCarouselRAF=requestAnimationFrame(tick);
+  }
+
+  if(heroCarouselRAF) cancelAnimationFrame(heroCarouselRAF);
+  heroCarouselLast=performance.now();
+  heroCarouselRAF=requestAnimationFrame(tick);
+}
+function stopHeroCarousel(){
+  if(heroCarouselRAF){cancelAnimationFrame(heroCarouselRAF);heroCarouselRAF=0;}
 }
 
 /* ══ INIT ══ */
